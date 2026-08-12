@@ -22,4 +22,6 @@ public interface ProjectAllocationRepository extends JpaRepository<ProjectAlloca
             @Param("memberId") Long memberId,
             @Param("closedStatuses") java.util.Collection<ProjectStatus> closedStatuses
     );
+    @Query("select count(distinct allocation.member.id) from ProjectAllocation allocation")
+    long countDistinctAllocatedMembers();
 }
