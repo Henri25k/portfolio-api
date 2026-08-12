@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,7 +22,7 @@ public class Member{
     private Long Id;
 
     @Column(nullable = false)
-    private String nome;
+    private String name;
 
     @Column(nullable = false)
     private String role;
