@@ -21,6 +21,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.empresa.portfolioapi.enums.ProjectStatus;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/projects")
@@ -45,9 +51,31 @@ public class ProjectController {
 
     @GetMapping
     public ResponseEntity<Page<ProjectResponse>> findAll(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) ProjectStatus status,
+            @RequestParam(required = false) Long managerId,
+            @RequestParam(required = false) BigDecimal minimumBudget,
+            @RequestParam(required = false) BigDecimal maximumBudget,
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate startDateFrom,
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate startDateTo,
             @PageableDefault(size = 10, sort = "id") Pageable pageable
     ) {
-        return ResponseEntity.ok(projectService.findAll(pageable));
+        return ResponseEntity.ok(
+                projectService.findAll(
+                        name,
+                        status,
+                        managerId,
+                        minimumBudget,
+                        maximumBudget,
+                        startDateFrom,
+                        startDateTo,
+                        pageable
+                )
+        );
     }
 
     @PutMapping("/{id}")

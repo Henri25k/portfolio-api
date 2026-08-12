@@ -19,6 +19,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import com.empresa.portfolioapi.specification.ProjectSpecification;
+import org.springframework.data.jpa.domain.Specification;
+
+import java.math.BigDecimal;
 
 
 import java.time.LocalDate;
@@ -62,8 +66,27 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional(Transactional.TxType.SUPPORTS)
-    public Page<ProjectResponse> findAll(Pageable pageable) {
-        return projectRepository.findAll(pageable)
+    public Page<ProjectResponse> findAll(
+            String name,
+            ProjectStatus status,
+            Long managerId,
+            BigDecimal minimumBudget,
+            BigDecimal maximumBudget,
+            LocalDate startDateFrom,
+            LocalDate startDateTo,
+            Pageable pageable
+    ) {
+        Specification<Project> specification = Specification.allOf(
+                ProjectSpecification.hasName(name),
+                ProjectSpecification.hasStatus(status),
+                ProjectSpecification.hasManagerId(managerId),
+                ProjectSpecification.budgetGreaterOrEqual(minimumBudget),
+                ProjectSpecification.budgetLessOrEqual(maximumBudget),
+                ProjectSpecification.startDateAfterOrEqual(startDateFrom),
+                ProjectSpecification.startDateBeforeOrEqual(startDateTo)
+        );
+
+        return projectRepository.findAll(specification, pageable)
                 .map(projectMapper::toResponse);
     }
 
