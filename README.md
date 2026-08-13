@@ -40,5 +40,6 @@ Crie o banco:
 
 ```sql
 CREATE DATABASE portfolio_db;
+```
 
-Código da API mockada de membros: https://github.com/Henri25k/member-api-mock
+Código da API mockada de membros: [member-api-mock](https://github.com/Henri25k/member-api-mock)
