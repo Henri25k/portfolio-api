@@ -131,6 +131,39 @@
                         </configuration>
                     </execution>
                 </executions>
+
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.15</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>coverage-report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>com/empresa/portfolioapi/config/**</exclude>
+                        <exclude>com/empresa/portfolioapi/controller/**</exclude>
+                        <exclude>com/empresa/portfolioapi/dto/**</exclude>
+                        <exclude>com/empresa/portfolioapi/entity/**</exclude>
+                        <exclude>com/empresa/portfolioapi/exception/**</exclude>
+                        <exclude>com/empresa/portfolioapi/repository/**</exclude>
+                        <exclude>com/empresa/portfolioapi/specification/**</exclude>
+                        <exclude>com/empresa/portfolioapi/client/**</exclude>
+                        <exclude>com/empresa/portfolioapi/PortfolioApiApplication.class</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>

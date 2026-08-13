@@ -21,7 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.empresa.portfolioapi.specification.ProjectSpecification;
 import org.springframework.data.jpa.domain.Specification;
-
+import com.empresa.portfolioapi.repository.ProjectAllocationRepository;
 import java.math.BigDecimal;
 
 
@@ -37,6 +37,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final MemberRepository memberRepository;
     private final ProjectMapper projectMapper;
     private final MemberExternalClient memberExternalClient;
+    private final ProjectAllocationRepository allocationRepository;
 
     @Override
     public ProjectResponse create(ProjectCreateRequest request) {
@@ -115,6 +116,13 @@ public class ProjectServiceImpl implements ProjectService {
         ProjectStatus newStatus = request.status();
 
         validateStatusTransition(currentStatus, newStatus);
+
+        if (newStatus == ProjectStatus.INICIADO
+                && allocationRepository.countByProjectId(id) == 0) {
+            throw new BusinessException(
+                    "O projeto deve ter pelo menos um membro alocado antes de ser iniciado."
+            );
+        }
 
         project.setStatus(newStatus);
 
